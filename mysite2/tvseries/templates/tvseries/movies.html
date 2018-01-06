@@ -1,0 +1,58 @@
+{% extends 'tvseries/base.html' %}
+{% block title %}All Movies{% endblock %}
+{% block songs_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" {% if filter_by == 'all' %}class="active"{% endif %}><a href="{% url 'tvseries:movies' 'all' %}">View All</a></li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Year</th>
+                            
+                                <th>Studio</th>
+                                                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for movie in movie_list %}
+                                <tr>
+                                    <td>{{ movie.Title }}</td>
+                                    <td>{{ movie.Year }}</td>
+                                    
+                                    <td>
+                                        <a href="{% url 'tvseries:detail' movie.writer.id %}">
+                                            <img src="{{ movie.writer.Writer_pic.url }}" class="img-responsive" style="width: 20px; float: left; margin-right: 10px;" />
+                                        </a>
+                                        <!--<a href="{% url 'tvseries:detail' movie.writer.id %}">{{ movie.writer.Literacy_agency }}</a> -->
+                                    </td>
+                                    <td>{{ movie.Studio}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

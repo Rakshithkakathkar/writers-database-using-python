@@ -1,0 +1,121 @@
+{% extends 'tvseries/base.html' %}
+{% block title %}{{ Writer }}{% endblock %}
+{% block writers_active %}active{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid songs-container">
+
+    <div class="row">
+
+        <!-- Left Writer Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'tvseries:detail' writer.id %}">
+                        {% if writer.Writer_pic %}
+                            <img src="{{ writer.Writer_pic.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ writer.Writer }} <small>{{  writer.Literacy_agency }}</small></h1>
+                    <h2>{{ writer.Bday }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Song Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="{% url 'tvseries:detail' writer.id %}">View All</a></li>
+                <li role="presentation"><a href="{% url 'tvseries:create_movie' writer.id %}">Add New Movie</a></li>
+                <li role="presentation"><a href="{% url 'tvseries:create_tvshow' writer.id %}">Add New TvShow</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>All Movies</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Title</th>                           
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for movie in writer.movie_set.all %}
+                            <tr>
+                                <td>{{ movie.Title }}</td>
+                                
+                                
+                                <td>
+                                    <form action="{% url 'tvseries:delete_movie' writer.id movie.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="movie_id" value="{{ movie.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>All TvShows</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>TvShow Name</th>                           
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for tvshow in writer.tvshow_set.all %}
+                            <tr>
+                                <td>{{ tvshow.Name }}</td>
+                                
+                                
+                                <td>
+                                    <form action="{% url 'tvseries:delete_tvshow' writer.id tvshow.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="tvshow_id" value="{{ tvshow.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
